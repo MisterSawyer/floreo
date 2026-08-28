@@ -250,10 +250,4 @@
 			transform: rotate(360deg);
 		}
 	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.halo {
-			animation: none;
-		}
-	}
 </style>

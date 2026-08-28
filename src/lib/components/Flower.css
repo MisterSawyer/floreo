@@ -1085,8 +1085,7 @@
 	}
 }
 
-/* ponytail: mirrors the prefers-reduced-motion block below — gallery thumbnails force the
-   already-grown, non-swaying end state regardless of OS motion setting, for render performance. */
+/* Gallery thumbnails force the already-grown, non-swaying end state for render performance. */
 .flower--static .sway,
 .flower--static .bloom-head,
 .flower--static .freesia-throat,
@@ -1152,80 +1151,4 @@
 .flower--static .lavender-spike-axis {
 	stroke-dashoffset: 0;
 	animation: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.sway,
-	.bloom-head,
-	.freesia-throat,
-	.pollen-mote {
-		animation: none;
-	}
-
-	.stem,
-	.stem-shadow,
-	.stem-glint,
-	.freesia-branch {
-		stroke-dashoffset: 0;
-		animation: none;
-	}
-
-	.leaf-unfurl,
-	.rose-leaflet-unfurl,
-	.petal-bloom,
-	.freesia-tube,
-	.freesia-throat-arrive,
-	.freesia-bud,
-	.freesia-stem-junction,
-	.freesia-supported,
-	.carnation-core,
-	.lily-throat,
-	.lily-spot,
-	.anther,
-	.pistil,
-	.tulip-ovary,
-	.poppy-ovary,
-	.poppy-stigma,
-	.disc-floret,
-	.daisy-disc-base,
-	.sunflower-disc-base,
-	.daffodil-corona,
-	.iris-style-arms,
-	.lavender-whorl,
-	.cosmos-disc-base,
-	.hibiscus-stigma,
-	.columbine-carpels,
-	.bluebell-flower,
-	.bluebell-bud,
-	.bloom-support-arrive,
-	.pollen-field {
-		opacity: 1;
-		animation: none;
-	}
-
-	.stamen {
-		stroke-dashoffset: 0;
-		animation: none;
-	}
-
-	.rose-leaf-rachis {
-		stroke-dashoffset: 0;
-		animation: none;
-	}
-
-	.poppy-sepal {
-		opacity: 1;
-		animation: none;
-	}
-
-	.lavender-spike-axis {
-		stroke-dashoffset: 0;
-		animation: none;
-	}
-
-	.bluebell-raceme-axis,
-	.bluebell-branch {
-		stroke-dashoffset: 0;
-		animation: none;
-	}
 }

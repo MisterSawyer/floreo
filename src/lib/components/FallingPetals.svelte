@@ -317,10 +317,4 @@
 			display: none;
 		}
 	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.petal-fall {
-			display: none;
-		}
-	}
 </style>
