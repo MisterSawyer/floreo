@@ -1,0 +1,28 @@
+@keyframes bloom {
+	from {
+		transform: scale(0) rotate(-15deg);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1) rotate(0deg);
+		opacity: 1;
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes sway {
+	from {
+		transform: rotate(-3deg);
+	}
+	to {
+		transform: rotate(3deg);
+	}
+}

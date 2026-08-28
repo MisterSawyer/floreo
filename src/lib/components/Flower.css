@@ -1,0 +1,1231 @@
+.flower {
+	display: block;
+	width: 100%;
+	max-width: 470px;
+	height: auto;
+	overflow: visible;
+	contain: layout style;
+}
+
+.sway {
+	animation: botanical-sway var(--sway-duration, 7s) ease-in-out infinite alternate;
+	will-change: transform;
+}
+
+.stem,
+.stem-shadow,
+.stem-glint,
+.freesia-branch {
+	fill: none;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.stem {
+	stroke-width: 4px;
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	animation: stem-grow var(--stem-duration) linear var(--stem-delay) forwards;
+}
+
+.flower--freesia .stem {
+	stroke-width: 3px;
+}
+
+.flower--daisy .stem,
+.flower--poppy .stem {
+	stroke-width: 2.8px;
+}
+
+.flower--daffodil .stem,
+.flower--iris .stem,
+.flower--lavender .stem {
+	stroke-width: 3.2px;
+}
+
+.flower--sunflower .stem {
+	stroke-width: 5.6px;
+}
+
+.flower--cosmos .stem,
+.flower--bluebell .stem,
+.flower--columbine .stem {
+	stroke-width: 2.8px;
+}
+
+.flower--hibiscus .stem {
+	stroke-width: 4.8px;
+}
+
+.flower--lavender .stem,
+.flower--lavender .stem-shadow,
+.flower--lavender .stem-glint {
+	stroke-linecap: butt;
+}
+
+.stem-shadow {
+	stroke: rgb(18 52 31 / 0.22);
+	stroke-width: 6.5px;
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	animation: stem-grow var(--stem-duration) linear var(--stem-delay) forwards;
+}
+
+.stem-glint {
+	stroke: rgb(255 255 255 / 0.26);
+	stroke-width: 0.85px;
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	animation: stem-grow var(--stem-duration) linear var(--stem-delay) forwards;
+}
+
+.leaf-unfurl {
+	transform-box: fill-box;
+	transform-origin: 0 100%;
+	opacity: 0;
+	animation: leaf-unfurl var(--leaf-duration) cubic-bezier(0.2, 0.9, 0.24, 1.22) forwards;
+}
+
+.leaf-surface {
+	stroke: rgb(15 66 37 / 0.25);
+	stroke-width: 0.7px;
+}
+
+.leaf-vein {
+	fill: none;
+	stroke: rgb(235 255 224 / 0.48);
+	stroke-width: 0.75px;
+	stroke-linecap: round;
+}
+
+.leaf-rachis {
+	fill: none;
+	stroke: rgb(27 92 47 / 0.78);
+	stroke-width: 1.4px;
+	stroke-linecap: round;
+}
+
+.rose-leaflet {
+	stroke-width: 0.55px;
+}
+
+.rose-leaf-rachis {
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	animation: stem-grow var(--rose-rachis-duration) ease-out forwards;
+}
+
+.rose-leaflet-unfurl {
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: 0 100%;
+	animation: leaf-unfurl var(--leaf-duration) cubic-bezier(0.2, 0.9, 0.24, 1.18) forwards;
+}
+
+.carnation-leaf {
+	stroke: rgb(42 83 63 / 0.27);
+}
+
+.tulip-leaf {
+	stroke-width: 0.85px;
+}
+
+.tulip-leaf-vein {
+	opacity: 0.32;
+	stroke-width: 0.55px;
+}
+
+.poppy-leaf,
+.daisy-leaf {
+	stroke-width: 0.55px;
+}
+
+.sunflower-leaf {
+	stroke-width: 0.72px;
+}
+
+.sunflower-petiole {
+	stroke-width: 2px;
+}
+
+.sunflower-leaf-vein {
+	stroke-width: 0.9px;
+}
+
+.iris-leaf,
+.daffodil-leaf {
+	stroke-width: 0.72px;
+}
+
+.iris-leaf-vein,
+.daffodil-leaf-vein {
+	opacity: 0.4;
+	stroke-width: 0.55px;
+}
+
+.lavender-leaf {
+	stroke: rgb(56 83 69 / 0.26);
+	stroke-width: 0.55px;
+}
+
+.cosmos-leaf-rachis,
+.cosmos-leaf-segment {
+	fill: none;
+	stroke-linecap: round;
+}
+
+.cosmos-leaf-rachis {
+	stroke-width: 1.15px;
+}
+
+.cosmos-leaf-segment {
+	stroke-width: 0.8px;
+}
+
+.columbine-petiole,
+.hibiscus-petiole {
+	stroke-width: 1.5px;
+}
+
+.columbine-leaflet {
+	stroke-width: 0.5px;
+}
+
+.hibiscus-leaf {
+	stroke-width: 0.68px;
+}
+
+.hibiscus-leaf-vein {
+	stroke-width: 0.8px;
+}
+
+.bluebell-leaf {
+	stroke-width: 0.66px;
+}
+
+.bluebell-leaf-vein {
+	opacity: 0.36;
+	stroke-width: 0.52px;
+}
+
+.bloom-head {
+	transform-origin: 0 0;
+	animation: flower-breathe 5.5s ease-in-out 1.7s infinite alternate;
+}
+
+.bloom-support-arrive {
+	opacity: 0;
+	animation: detail-appear var(--detail-duration) ease-out forwards;
+}
+
+.petal-bloom {
+	transform-origin: 0 0;
+	opacity: 0;
+	animation: petal-unfurl 1.05s cubic-bezier(0.16, 0.87, 0.21, 1.18) forwards;
+}
+
+.petal-bloom--rose {
+	animation-name: rose-unfurl;
+	animation-duration: var(--rose-petal-duration);
+}
+
+.petal-bloom--carnation {
+	animation-duration: var(--carnation-petal-duration);
+}
+
+.petal-bloom--lily {
+	animation-name: lily-unfurl;
+	animation-duration: var(--lily-petal-duration);
+}
+
+.petal-bloom--freesia {
+	animation-duration: var(--freesia-petal-duration);
+}
+
+.petal-bloom--tulip {
+	animation-name: tulip-unfurl;
+	animation-duration: var(--tulip-petal-duration);
+}
+
+.petal-bloom--poppy {
+	animation-name: poppy-unfurl;
+	animation-duration: var(--poppy-petal-duration);
+}
+
+.petal-bloom--daisy {
+	animation-name: daisy-unfurl;
+	animation-duration: var(--daisy-petal-duration);
+}
+
+.petal-bloom--sunflower {
+	animation-name: daisy-unfurl;
+	animation-duration: var(--sunflower-petal-duration);
+}
+
+.petal-bloom--daffodil {
+	animation-name: tulip-unfurl;
+	animation-duration: var(--daffodil-petal-duration);
+}
+
+.petal-bloom--iris {
+	animation-name: iris-unfurl;
+	animation-duration: var(--iris-petal-duration);
+}
+
+.petal-bloom--cosmos {
+	animation-name: daisy-unfurl;
+	animation-duration: var(--cosmos-petal-duration);
+}
+
+.petal-bloom--hibiscus {
+	animation-name: hibiscus-unfurl;
+	animation-duration: var(--hibiscus-petal-duration);
+}
+
+.petal-bloom--columbine {
+	animation-name: iris-unfurl;
+	animation-duration: var(--columbine-petal-duration);
+}
+
+.petal-surface {
+	stroke: rgb(90 32 48 / 0.2);
+	stroke-width: 0.55px;
+	stroke-linejoin: round;
+}
+
+.rose-petal {
+	stroke: rgb(82 33 45 / 0.16);
+	stroke-width: 0.58px;
+}
+
+.rose-sepal {
+	stroke: rgb(18 69 38 / 0.24);
+	stroke-width: 0.6px;
+}
+
+.rose-petal-rim {
+	fill: none;
+	stroke: rgb(255 255 255 / 0.72);
+	stroke-width: 1.1px;
+	stroke-linecap: round;
+}
+
+.carnation-petal {
+	stroke-width: 0.48px;
+	stroke: rgb(92 31 54 / 0.27);
+}
+
+.lily-petal {
+	stroke: rgb(92 49 51 / 0.2);
+	stroke-width: 0.7px;
+}
+
+.tulip-tepal {
+	stroke: rgb(91 43 44 / 0.2);
+	stroke-width: 0.7px;
+}
+
+.tulip-vein {
+	fill: none;
+	stroke: rgb(117 55 56 / 0.46);
+	stroke-width: 0.72px;
+	stroke-linecap: round;
+}
+
+.tulip-basal-mark {
+	fill: none;
+	stroke: rgb(89 53 41 / 0.24);
+	stroke-width: 1.2px;
+	stroke-linecap: round;
+}
+
+.tulip-ovary,
+.poppy-ovary,
+.poppy-stigma {
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: anther-arrive var(--anther-duration) cubic-bezier(0.2, 0.9, 0.3, 1.4) forwards;
+}
+
+.poppy-petal {
+	stroke: rgb(92 21 25 / 0.2);
+	stroke-width: 0.62px;
+}
+
+.poppy-blotch {
+	fill: rgb(39 27 33 / 0.86);
+}
+
+.poppy-crease {
+	fill: none;
+	stroke: rgb(255 220 214 / 0.44);
+	stroke-width: 0.72px;
+	stroke-linecap: round;
+}
+
+.poppy-stamen {
+	stroke: rgb(44 32 35 / 0.9);
+	stroke-width: 0.75px;
+}
+
+.poppy-sepal {
+	opacity: 0;
+	stroke: rgb(18 68 37 / 0.25);
+	stroke-width: 0.65px;
+	animation: poppy-sepal-unfurl 560ms ease-out forwards;
+}
+
+.daisy-bract {
+	stroke: rgb(22 76 40 / 0.22);
+	stroke-width: 0.5px;
+}
+
+.daisy-ray {
+	stroke: rgb(92 74 83 / 0.18);
+	stroke-width: 0.5px;
+}
+
+.daisy-ray-vein {
+	fill: none;
+	stroke: rgb(155 117 130 / 0.25);
+	stroke-width: 0.52px;
+	stroke-linecap: round;
+}
+
+.daisy-disc-base {
+	opacity: 0;
+	stroke: rgb(108 72 23 / 0.28);
+	stroke-width: 0.7px;
+	animation: detail-appear var(--detail-duration) ease-out forwards;
+}
+
+.disc-floret {
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: disc-floret-open var(--detail-duration) cubic-bezier(0.2, 0.85, 0.3, 1.35) forwards;
+}
+
+.sunflower-bract {
+	stroke: rgb(18 68 34 / 0.28);
+	stroke-width: 0.55px;
+}
+
+.sunflower-ray {
+	stroke: rgb(112 68 15 / 0.28);
+	stroke-width: 0.58px;
+}
+
+.sunflower-ray-vein {
+	fill: none;
+	stroke: rgb(137 83 18 / 0.48);
+	stroke-width: 0.65px;
+	stroke-linecap: round;
+}
+
+.sunflower-disc-base,
+.daffodil-corona,
+.iris-style-arms {
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: anther-arrive var(--detail-duration) cubic-bezier(0.2, 0.9, 0.3, 1.25) forwards;
+}
+
+.sunflower-disc-base {
+	stroke: rgb(70 42 17 / 0.46);
+	stroke-width: 0.9px;
+}
+
+.sunflower-disc-floret {
+	stroke: rgb(63 37 15 / 0.34);
+	stroke-width: 0.25px;
+}
+
+.daffodil-spathe {
+	stroke: rgb(80 87 38 / 0.28);
+	stroke-width: 0.55px;
+}
+
+.daffodil-tepal {
+	stroke: rgb(121 90 22 / 0.22);
+	stroke-width: 0.62px;
+}
+
+.daffodil-vein {
+	fill: none;
+	stroke: rgb(154 116 28 / 0.48);
+	stroke-width: 0.65px;
+	stroke-linecap: round;
+}
+
+.daffodil-corona-rim {
+	stroke: rgb(134 82 13 / 0.34);
+	stroke-width: 0.65px;
+	stroke-linejoin: round;
+}
+
+.daffodil-stamen,
+.daffodil-style {
+	stroke: rgb(250 207 83 / 0.88);
+	stroke-width: 0.75px;
+}
+
+.iris-fall,
+.iris-standard {
+	stroke: rgb(65 43 91 / 0.25);
+	stroke-width: 0.68px;
+}
+
+.iris-vein {
+	fill: none;
+	stroke: rgb(255 255 255 / 0.62);
+	stroke-width: 0.72px;
+	stroke-linecap: round;
+}
+
+.iris-beard {
+	filter: drop-shadow(0 1px 1px rgb(84 51 20 / 0.18));
+}
+
+.iris-style-arm {
+	stroke: rgb(76 46 105 / 0.22);
+	stroke-width: 0.55px;
+}
+
+.lavender-spike-axis {
+	fill: none;
+	stroke-width: 2px;
+	stroke-linecap: square;
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	animation: stem-grow var(--lavender-spike-duration) linear forwards;
+}
+
+.lavender-whorl {
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: lavender-whorl-open var(--lavender-petal-duration) cubic-bezier(0.2, 0.86, 0.28, 1.25)
+		forwards;
+}
+
+.lavender-corolla {
+	stroke: rgb(61 45 95 / 0.34);
+	stroke-width: 0.48px;
+	stroke-linejoin: round;
+}
+
+.lavender-calyx {
+	stroke: rgb(38 73 50 / 0.26);
+	stroke-width: 0.4px;
+}
+
+.cosmos-bract {
+	stroke: rgb(23 77 42 / 0.22);
+	stroke-width: 0.45px;
+}
+
+.cosmos-ray {
+	stroke: rgb(103 48 75 / 0.2);
+	stroke-width: 0.58px;
+}
+
+.cosmos-ray-vein {
+	fill: none;
+	stroke: rgb(131 70 99 / 0.42);
+	stroke-width: 0.65px;
+	stroke-linecap: round;
+}
+
+.cosmos-disc-base {
+	opacity: 0;
+	stroke: rgb(115 75 20 / 0.28);
+	stroke-width: 0.65px;
+	animation: detail-appear var(--detail-duration) ease-out forwards;
+}
+
+.cosmos-disc-floret {
+	stroke: rgb(104 69 15 / 0.24);
+	stroke-width: 0.24px;
+}
+
+.hibiscus-sepal {
+	stroke: rgb(17 64 34 / 0.24);
+	stroke-width: 0.55px;
+}
+
+.hibiscus-petal {
+	stroke: rgb(91 25 51 / 0.24);
+	stroke-width: 0.64px;
+}
+
+.hibiscus-eye {
+	opacity: 0.78;
+}
+
+.hibiscus-vein {
+	fill: none;
+	stroke: rgb(255 228 232 / 0.54);
+	stroke-width: 0.72px;
+	stroke-linecap: round;
+}
+
+.hibiscus-column {
+	stroke: rgb(247 202 113 / 0.92);
+	stroke-width: 2.7px;
+}
+
+.hibiscus-style-branch {
+	fill: none;
+	stroke: rgb(239 179 104 / 0.86);
+	stroke-width: 1.2px;
+	stroke-linecap: round;
+}
+
+.hibiscus-stigma {
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: anther-arrive var(--anther-duration) cubic-bezier(0.2, 0.9, 0.3, 1.4) forwards;
+}
+
+.columbine-spur {
+	stroke: rgb(59 42 102 / 0.28);
+	stroke-width: 0.6px;
+}
+
+.columbine-sepal,
+.columbine-petal {
+	stroke: rgb(66 43 104 / 0.24);
+	stroke-width: 0.62px;
+}
+
+.columbine-vein {
+	fill: none;
+	stroke: rgb(255 255 255 / 0.58);
+	stroke-width: 0.6px;
+	stroke-linecap: round;
+}
+
+.columbine-stamen {
+	stroke: rgb(243 211 127 / 0.9);
+	stroke-width: 0.7px;
+}
+
+.columbine-carpels {
+	fill: none;
+	stroke: rgb(67 104 52 / 0.84);
+	stroke-width: 1.05px;
+	stroke-linecap: round;
+	opacity: 0;
+	animation: detail-appear var(--detail-duration) ease-out forwards;
+}
+
+.bluebell-raceme-axis,
+.bluebell-branch {
+	fill: none;
+	stroke-linecap: round;
+	/* Keep the next rounded dash cap beyond the path until growth reaches it. */
+	stroke-dasharray: 1.1;
+	stroke-dashoffset: 1.1;
+	animation: stem-grow var(--bluebell-raceme-duration) linear forwards;
+}
+
+.bluebell-raceme-axis {
+	stroke-width: 2.2px;
+}
+
+.bluebell-branch {
+	stroke-width: 1.25px;
+	animation-duration: var(--branch-duration);
+}
+
+.bluebell-flower {
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: 50% 0;
+	animation: bluebell-drop-open var(--bluebell-petal-duration) cubic-bezier(0.2, 0.86, 0.28, 1.2)
+		forwards;
+}
+
+.bluebell-corolla {
+	stroke: rgb(45 44 105 / 0.34);
+	stroke-width: 0.58px;
+	stroke-linejoin: round;
+}
+
+.bluebell-midvein {
+	fill: none;
+	stroke: rgb(255 255 255 / 0.42);
+	stroke-width: 0.55px;
+	stroke-linecap: round;
+}
+
+.bluebell-bud {
+	opacity: 0;
+	stroke: rgb(47 43 104 / 0.28);
+	stroke-width: 0.5px;
+	transform-box: fill-box;
+	transform-origin: 50% 0;
+	animation: bud-arrive var(--bud-duration) ease-out forwards;
+}
+
+.petal-fold,
+.lily-vein {
+	fill: none;
+	stroke: rgb(255 255 255 / 0.64);
+	stroke-width: 0.8px;
+	stroke-linecap: round;
+}
+
+.petal-fold--soft {
+	stroke-width: 0.55px;
+}
+
+.lily-vein {
+	stroke: rgb(112 50 58 / 0.7);
+	stroke-width: 0.9px;
+}
+
+.lily-spot {
+	opacity: 0;
+	animation: detail-appear var(--detail-duration) ease-out forwards;
+}
+
+.carnation-core,
+.lily-throat {
+	opacity: 0;
+	animation: detail-appear var(--detail-duration) ease-out forwards;
+}
+
+.stamen {
+	fill: none;
+	stroke-width: 0.9px;
+	stroke-linecap: round;
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	animation: stamen-grow var(--stamen-duration) ease-out forwards;
+}
+
+.stamen.hibiscus-style-branch {
+	stroke-width: 1.2px;
+	animation-name: hibiscus-style-branch-grow;
+	animation-duration: var(--detail-duration);
+	animation-fill-mode: both;
+}
+
+.anther,
+.pistil {
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: anther-arrive var(--anther-duration) cubic-bezier(0.2, 0.9, 0.3, 1.4) forwards;
+}
+
+.freesia-branch {
+	stroke-width: 1.8px;
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	animation: stem-grow var(--branch-duration) ease-out forwards;
+}
+
+.freesia-stem-junction,
+.freesia-supported {
+	opacity: 0;
+	animation: detail-appear var(--support-duration) ease-out forwards;
+}
+
+.freesia-tube {
+	transform-box: fill-box;
+	transform-origin: 0 50%;
+	opacity: 0;
+	animation: freesia-tube-grow var(--freesia-tube-duration) ease-out forwards;
+}
+
+.freesia-tube {
+	stroke: rgb(95 58 22 / 0.2);
+	stroke-width: 0.65px;
+}
+
+.freesia-throat-arrive {
+	opacity: 0;
+	animation: detail-appear var(--detail-duration) ease-out forwards;
+}
+
+.freesia-junction,
+.freesia-calyx {
+	stroke: rgb(23 74 42 / 0.18);
+	stroke-width: 0.45px;
+}
+
+.freesia-petal {
+	stroke-width: 0.45px;
+}
+
+.freesia-throat {
+	animation: throat-pulse 4s ease-in-out 1.8s infinite alternate;
+}
+
+.freesia-bud {
+	transform-box: fill-box;
+	transform-origin: 0 50%;
+	opacity: 0;
+	stroke: rgb(79 65 22 / 0.18);
+	stroke-width: 0.6px;
+	animation: bud-arrive var(--bud-duration) ease-out forwards;
+}
+
+.pollen-field {
+	opacity: 0;
+	animation: detail-appear var(--detail-duration) ease-out forwards;
+}
+
+.pollen-mote {
+	opacity: 0;
+	filter: drop-shadow(0 0 2px rgb(255 232 125 / 0.8));
+	animation: pollen-drift 7s ease-in-out infinite;
+}
+
+@keyframes stem-grow {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+
+@keyframes leaf-unfurl {
+	from {
+		opacity: 0;
+		transform: scale(0.08) rotate(-16deg);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes petal-unfurl {
+	0% {
+		opacity: 0;
+		transform: scale(0.08, 0.025) rotate(-13deg);
+	}
+	68% {
+		opacity: 1;
+		transform: scale(1.03, 1.08) rotate(1.2deg);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes rose-unfurl {
+	0% {
+		opacity: 0;
+		transform: scale(var(--rose-fold, 0.22), 0.04) rotate(var(--rose-turn, -7deg));
+	}
+	72% {
+		opacity: 1;
+		transform: scale(1.035, 1.055) rotate(-0.8deg);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes tulip-unfurl {
+	0% {
+		opacity: 0;
+		transform: scale(0.16, 0.22) rotate(var(--tepal-turn, -5deg));
+	}
+	72% {
+		opacity: 1;
+		transform: scale(1.02, 1.045) rotate(-0.6deg);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes poppy-unfurl {
+	0% {
+		opacity: 0;
+		transform: scale(0.11, 0.035) rotate(var(--poppy-turn, -9deg));
+	}
+	58% {
+		opacity: 1;
+		transform: scale(0.96, 1.1) rotate(1.8deg);
+	}
+	78% {
+		transform: scale(1.035, 0.98) rotate(-0.8deg);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes daisy-unfurl {
+	0% {
+		opacity: 0;
+		transform: scale(0.16, 0.05) rotate(-6deg);
+	}
+	74% {
+		opacity: 1;
+		transform: scale(1.025, 1.07) rotate(0.6deg);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes lily-unfurl {
+	0% {
+		opacity: 0;
+		transform: scale(0.04, 0.02) rotate(-18deg);
+	}
+	72% {
+		opacity: 1;
+		transform: scale(0.98, 1.08) rotate(1deg);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes iris-unfurl {
+	0% {
+		opacity: 0;
+		transform: scale(0.08, 0.025) rotate(-15deg);
+	}
+	72% {
+		opacity: 1;
+		transform: scale(1.025, 1.075) rotate(1deg);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes hibiscus-unfurl {
+	0% {
+		opacity: 0;
+		transform: scale(0.08, 0.025) rotate(-12deg);
+	}
+	68% {
+		opacity: 1;
+		transform: scale(1.035, 1.06) rotate(0.8deg);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes bluebell-drop-open {
+	from {
+		opacity: 0;
+		transform: scale(0.12, 0.04) rotate(-8deg);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes lavender-whorl-open {
+	from {
+		opacity: 0;
+		transform: scale(0.12) rotate(-5deg);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes detail-appear {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes stamen-grow {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+
+@keyframes hibiscus-style-branch-grow {
+	from {
+		opacity: 0;
+		stroke-dashoffset: 1;
+	}
+	to {
+		opacity: 1;
+		stroke-dashoffset: 0;
+	}
+}
+
+@keyframes anther-arrive {
+	from {
+		opacity: 0;
+		transform: scale(0);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes disc-floret-open {
+	from {
+		opacity: 0;
+		transform: scale(0) rotate(-35deg);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+}
+
+@keyframes poppy-sepal-unfurl {
+	from {
+		opacity: 0;
+		translate: 0 -4px;
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@keyframes freesia-tube-grow {
+	from {
+		opacity: 0;
+		transform: scaleX(0.03);
+	}
+	to {
+		opacity: 1;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes bud-arrive {
+	from {
+		opacity: 0;
+		transform: scaleX(0);
+	}
+	to {
+		opacity: 1;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes botanical-sway {
+	0% {
+		transform: rotate(-1.7deg) translateX(-1px);
+	}
+	55% {
+		transform: rotate(0.5deg) translateX(0);
+	}
+	100% {
+		transform: rotate(1.9deg) translateX(1px);
+	}
+}
+
+@keyframes flower-breathe {
+	from {
+		transform: rotate(-0.7deg) scale(0.997);
+	}
+	to {
+		transform: rotate(0.7deg) scale(1.006);
+	}
+}
+
+@keyframes throat-pulse {
+	from {
+		filter: brightness(0.96);
+	}
+	to {
+		filter: brightness(1.12);
+	}
+}
+
+@keyframes pollen-drift {
+	0% {
+		opacity: 0;
+		transform: translate(0, 7px) scale(0.7);
+	}
+	20% {
+		opacity: 0.72;
+	}
+	75% {
+		opacity: 0.4;
+	}
+	100% {
+		opacity: 0;
+		transform: translate(var(--mote-drift), -22px) scale(1.1);
+	}
+}
+
+@media (hover: hover) {
+	.flower:hover .bloom-head,
+	.flower:hover .freesia-bloom {
+		filter: saturate(1.05) brightness(1.015);
+	}
+}
+
+/* ponytail: mirrors the prefers-reduced-motion block below — gallery thumbnails force the
+   already-grown, non-swaying end state regardless of OS motion setting, for render performance. */
+.flower--static .sway,
+.flower--static .bloom-head,
+.flower--static .freesia-throat,
+.flower--static .pollen-mote {
+	animation: none;
+}
+
+.flower--static .stem,
+.flower--static .stem-shadow,
+.flower--static .stem-glint,
+.flower--static .freesia-branch,
+.flower--static .bluebell-raceme-axis,
+.flower--static .bluebell-branch {
+	stroke-dashoffset: 0;
+	animation: none;
+}
+
+.flower--static .leaf-unfurl,
+.flower--static .rose-leaflet-unfurl,
+.flower--static .petal-bloom,
+.flower--static .freesia-tube,
+.flower--static .freesia-throat-arrive,
+.flower--static .freesia-bud,
+.flower--static .freesia-stem-junction,
+.flower--static .freesia-supported,
+.flower--static .carnation-core,
+.flower--static .lily-throat,
+.flower--static .lily-spot,
+.flower--static .anther,
+.flower--static .pistil,
+.flower--static .tulip-ovary,
+.flower--static .poppy-ovary,
+.flower--static .poppy-stigma,
+.flower--static .disc-floret,
+.flower--static .daisy-disc-base,
+.flower--static .sunflower-disc-base,
+.flower--static .daffodil-corona,
+.flower--static .iris-style-arms,
+.flower--static .lavender-whorl,
+.flower--static .bluebell-flower,
+.flower--static .bluebell-bud,
+.flower--static .bloom-support-arrive,
+.flower--static .pollen-field {
+	opacity: 1;
+	animation: none;
+}
+
+.flower--static .stamen {
+	stroke-dashoffset: 0;
+	animation: none;
+}
+
+.flower--static .rose-leaf-rachis {
+	stroke-dashoffset: 0;
+	animation: none;
+}
+
+.flower--static .poppy-sepal {
+	opacity: 1;
+	animation: none;
+}
+
+.flower--static .lavender-spike-axis {
+	stroke-dashoffset: 0;
+	animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.sway,
+	.bloom-head,
+	.freesia-throat,
+	.pollen-mote {
+		animation: none;
+	}
+
+	.stem,
+	.stem-shadow,
+	.stem-glint,
+	.freesia-branch {
+		stroke-dashoffset: 0;
+		animation: none;
+	}
+
+	.leaf-unfurl,
+	.rose-leaflet-unfurl,
+	.petal-bloom,
+	.freesia-tube,
+	.freesia-throat-arrive,
+	.freesia-bud,
+	.freesia-stem-junction,
+	.freesia-supported,
+	.carnation-core,
+	.lily-throat,
+	.lily-spot,
+	.anther,
+	.pistil,
+	.tulip-ovary,
+	.poppy-ovary,
+	.poppy-stigma,
+	.disc-floret,
+	.daisy-disc-base,
+	.sunflower-disc-base,
+	.daffodil-corona,
+	.iris-style-arms,
+	.lavender-whorl,
+	.cosmos-disc-base,
+	.hibiscus-stigma,
+	.columbine-carpels,
+	.bluebell-flower,
+	.bluebell-bud,
+	.bloom-support-arrive,
+	.pollen-field {
+		opacity: 1;
+		animation: none;
+	}
+
+	.stamen {
+		stroke-dashoffset: 0;
+		animation: none;
+	}
+
+	.rose-leaf-rachis {
+		stroke-dashoffset: 0;
+		animation: none;
+	}
+
+	.poppy-sepal {
+		opacity: 1;
+		animation: none;
+	}
+
+	.lavender-spike-axis {
+		stroke-dashoffset: 0;
+		animation: none;
+	}
+
+	.bluebell-raceme-axis,
+	.bluebell-branch {
+		stroke-dashoffset: 0;
+		animation: none;
+	}
+}
