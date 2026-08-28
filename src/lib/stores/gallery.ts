@@ -4,6 +4,8 @@ import type { Seed } from '$lib/flower/types';
 
 const GALLERY_ENDPOINT = '/api/gallery';
 const LEGACY_STORAGE_KEY = 'floreo:gallery';
+// ponytail: netlify functions aren't served by `vite dev`, so /api/gallery 404s locally.
+const DEV_STORAGE_KEY = 'floreo:gallery:dev';
 
 interface GalleryResponse {
 	seeds: Seed[];
@@ -42,25 +44,31 @@ function isGalleryResponse(value: unknown): value is GalleryResponse {
 	);
 }
 
-function readLegacySeeds(): Seed[] {
+function readStoredSeeds(key: string): Seed[] {
 	try {
-		const value: unknown = JSON.parse(localStorage.getItem(LEGACY_STORAGE_KEY) ?? '[]');
+		const value: unknown = JSON.parse(localStorage.getItem(key) ?? '[]');
 		return Array.isArray(value) ? [...new Set(value.filter(isSeed))] : [];
 	} catch {
 		return [];
 	}
 }
 
+const readLegacySeeds = () => readStoredSeeds(LEGACY_STORAGE_KEY);
+
 async function fetchGallery(): Promise<void> {
 	galleryLoading.set(true);
 	try {
-		const response = await fetch(GALLERY_ENDPOINT, { headers: { Accept: 'application/json' } });
-		if (!response.ok) throw new Error(`Gallery request failed with ${response.status}`);
+		if (import.meta.env.DEV) {
+			confirmedSeeds = readStoredSeeds(DEV_STORAGE_KEY);
+		} else {
+			const response = await fetch(GALLERY_ENDPOINT, { headers: { Accept: 'application/json' } });
+			if (!response.ok) throw new Error(`Gallery request failed with ${response.status}`);
 
-		const data: unknown = await response.json();
-		if (!isGalleryResponse(data)) throw new Error('Gallery returned an invalid response');
+			const data: unknown = await response.json();
+			if (!isGalleryResponse(data)) throw new Error('Gallery returned an invalid response');
 
-		confirmedSeeds = data.seeds;
+			confirmedSeeds = data.seeds;
+		}
 		galleryError.set(false);
 		publishSeeds();
 	} catch (error) {
@@ -81,16 +89,19 @@ async function persistChange(seed: Seed, saved: boolean): Promise<boolean> {
 	await loadGallery();
 
 	try {
-		const response = await fetch(GALLERY_ENDPOINT, {
-			method: saved ? 'POST' : 'DELETE',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ seed })
-		});
-		if (!response.ok) throw new Error(`Gallery request failed with ${response.status}`);
+		if (!import.meta.env.DEV) {
+			const response = await fetch(GALLERY_ENDPOINT, {
+				method: saved ? 'POST' : 'DELETE',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ seed })
+			});
+			if (!response.ok) throw new Error(`Gallery request failed with ${response.status}`);
+		}
 
 		confirmedSeeds = saved
 			? [seed, ...confirmedSeeds.filter((savedSeed) => savedSeed !== seed)]
 			: confirmedSeeds.filter((savedSeed) => savedSeed !== seed);
+		if (import.meta.env.DEV) localStorage.setItem(DEV_STORAGE_KEY, JSON.stringify(confirmedSeeds));
 
 		if (pendingChanges.get(seed) === saved) pendingChanges.delete(seed);
 		galleryError.set(false);

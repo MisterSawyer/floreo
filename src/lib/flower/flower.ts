@@ -44,24 +44,6 @@ const NAME_VARIANT_COUNTS: Record<FlowerKind, number> = Object.fromEntries(
 	FLOWER_KINDS.map((kind) => [kind, translations.en.flowerNames[kind].length])
 ) as Record<FlowerKind, number>;
 
-export const FLOWER_LABELS: Record<FlowerKind, string> = {
-	rose: 'Rose',
-	freesia: 'Freesia',
-	lily: 'Lily',
-	carnation: 'Carnation',
-	tulip: 'Tulip',
-	poppy: 'Poppy',
-	daisy: 'Daisy',
-	sunflower: 'Sunflower',
-	daffodil: 'Daffodil',
-	iris: 'Bearded iris',
-	lavender: 'English lavender',
-	cosmos: 'Cosmos',
-	hibiscus: 'Hibiscus',
-	columbine: 'Columbine',
-	bluebell: 'English bluebell'
-};
-
 function roseLayers(rng: () => number): PetalLayer[] {
 	// Cultivated double roses retain a five-petal outer plan, then pack transformed
 	// stamens into a dense, offset spiral toward the centre.

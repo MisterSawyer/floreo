@@ -4,13 +4,24 @@
 	import { galleryError, galleryLoading, loadGallery, savedSeeds } from '$lib/stores/gallery';
 	import { FLOWER_KINDS, generateFlower } from '$lib/flower/flower';
 	import { t } from '$lib/i18n';
-	import type { Seed } from '$lib/flower/types';
+	import type { FlowerKind, Seed } from '$lib/flower/types';
 
 	function select(seed: Seed) {
 		goto(`/?seed=${seed}`);
 	}
 
-	let collectedCount = $derived(new Set($savedSeeds.map((seed) => generateFlower(seed).kind)).size);
+	let selectedKind: FlowerKind | null = $state(null);
+
+	let seedKinds = $derived($savedSeeds.map((seed) => ({ seed, kind: generateFlower(seed).kind })));
+	let presentKinds = $derived(
+		FLOWER_KINDS.filter((kind) => seedKinds.some((s) => s.kind === kind))
+	);
+	let collectedCount = $derived(new Set(seedKinds.map((s) => s.kind)).size);
+	let filteredSeeds = $derived(
+		selectedKind
+			? seedKinds.filter((s) => s.kind === selectedKind).map((s) => s.seed)
+			: $savedSeeds
+	);
 </script>
 
 <svelte:head>
@@ -25,9 +36,19 @@
 			<p class="m-0 text-[0.62rem] font-bold tracking-[0.15em] text-emerald-900/45 uppercase">
 				{$t('ui.yourCollection')}
 			</p>
-			<h1 class="mt-1 font-serif text-3xl font-normal tracking-tight">
-				{$t('ui.seedGardenHeading')}
-			</h1>
+			<div class="mt-1 flex items-center gap-3">
+				<h1 class="font-serif text-3xl font-normal tracking-tight">
+					{$t('ui.seedGardenHeading')}
+				</h1>
+				{#if $savedSeeds.length > 0}
+					<span
+						class="grid size-9 shrink-0 place-items-center rounded-full border border-white/70 bg-white/40 text-sm font-semibold shadow-inner backdrop-blur-md"
+						aria-label={$t('ui.totalFlowersCount', { count: $savedSeeds.length })}
+					>
+						{$savedSeeds.length}
+					</span>
+				{/if}
+			</div>
 			{#if $savedSeeds.length > 0}
 				<div class="mt-2">
 					<div
@@ -106,7 +127,33 @@
 					{$t('ui.gardenUpdateError')}
 				</p>
 			{/if}
-			<Garden seeds={$savedSeeds} onSelect={select} />
+			{#if presentKinds.length > 0}
+				<div class="flex flex-wrap gap-2 px-4 pb-2 sm:px-8">
+					<button
+						type="button"
+						onclick={() => (selectedKind = null)}
+						class="min-h-9 rounded-full border border-white/70 px-4 text-sm font-medium backdrop-blur-md transition-colors {selectedKind ===
+						null
+							? 'bg-emerald-950 text-white'
+							: 'bg-white/40 text-emerald-950 hover:bg-white/60'}"
+					>
+						{$t('ui.filterAllSpecies')}
+					</button>
+					{#each presentKinds as kind (kind)}
+						<button
+							type="button"
+							onclick={() => (selectedKind = kind)}
+							class="min-h-9 rounded-full border border-white/70 px-4 text-sm font-medium backdrop-blur-md transition-colors {selectedKind ===
+							kind
+								? 'bg-emerald-950 text-white'
+								: 'bg-white/40 text-emerald-950 hover:bg-white/60'}"
+						>
+							{$t(`speciesNames.${kind}`)}
+						</button>
+					{/each}
+				</div>
+			{/if}
+			<Garden seeds={filteredSeeds} onSelect={select} />
 		{/if}
 	</div>
 </main>
