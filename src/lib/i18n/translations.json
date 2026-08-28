@@ -16,6 +16,10 @@
 			"gardenWaitingTitle": "Your garden is waiting.",
 			"gardenWaitingSubtitle": "Grow a flower and save the ones you love.",
 			"growFirstFlower": "Grow the first flower",
+			"loadingGarden": "Loading your garden…",
+			"gardenLoadError": "Your garden could not be loaded.",
+			"gardenUpdateError": "The latest change could not be saved. Please try again.",
+			"retry": "Try again",
 			"removeFlowerAriaLabel": "Remove {name} from your garden",
 			"proceduralAriaLabel": "Procedurally generated {name}",
 			"switchLanguage": "Switch language",
@@ -29,10 +33,20 @@
 			"tulip": ["Ivory tulip", "Ember tulip", "Garden tulip", "Silken tulip"],
 			"poppy": ["Field poppy", "Corn poppy", "Summer poppy", "Crimson poppy"],
 			"daisy": ["Lawn daisy", "Meadow daisy", "Morning daisy", "English daisy"],
-			"sunflower": ["Golden sunflower", "Prairie sunflower", "Summer sunflower", "Common sunflower"],
+			"sunflower": [
+				"Golden sunflower",
+				"Prairie sunflower",
+				"Summer sunflower",
+				"Common sunflower"
+			],
 			"daffodil": ["Wild daffodil", "Trumpet daffodil", "Lent lily", "Woodland daffodil"],
 			"iris": ["Bearded iris", "Garden iris", "Flag iris", "German iris"],
-			"lavender": ["English lavender", "True lavender", "Garden lavender", "Narrow-leaved lavender"],
+			"lavender": [
+				"English lavender",
+				"True lavender",
+				"Garden lavender",
+				"Narrow-leaved lavender"
+			],
 			"cosmos": ["Garden cosmos", "Cut-leaf cosmos", "Meadow cosmos", "Sensation cosmos"],
 			"hibiscus": ["Chinese hibiscus", "Tropical hibiscus", "Crimson hibiscus", "Island hibiscus"],
 			"columbine": ["Common columbine", "European columbine", "Woodland columbine"],
@@ -56,6 +70,10 @@
 			"gardenWaitingTitle": "Twój ogród czeka.",
 			"gardenWaitingSubtitle": "Wyhoduj kwiat i zapisz te, które lubisz najbardziej.",
 			"growFirstFlower": "Wyhoduj pierwszy kwiat",
+			"loadingGarden": "Wczytywanie ogrodu…",
+			"gardenLoadError": "Nie udało się wczytać ogrodu.",
+			"gardenUpdateError": "Nie udało się zapisać ostatniej zmiany. Spróbuj ponownie.",
+			"retry": "Spróbuj ponownie",
 			"removeFlowerAriaLabel": "Usuń {name} ze swojego ogrodu",
 			"proceduralAriaLabel": "Proceduralnie wygenerowany {name}",
 			"switchLanguage": "Zmień język",
@@ -64,17 +82,52 @@
 		"flowerNames": {
 			"rose": ["Aksamitna róża", "Porcelanowa róża", "Różana jutrzenka", "Dzika róża ogrodowa"],
 			"freesia": ["Złota frezja", "Łąkowa frezja", "Jedwabista frezja", "Wiosenna frezja"],
-			"lily": ["Gwiezdna lilia", "Lilia orientalna", "Lilia z ogrodu księżyca", "Lilia skąpana słońcem"],
+			"lily": [
+				"Gwiezdna lilia",
+				"Lilia orientalna",
+				"Lilia z ogrodu księżyca",
+				"Lilia skąpana słońcem"
+			],
 			"carnation": ["Koronkowy goździk", "Goździk dziedziczny", "Falbaniasty goździk"],
-			"tulip": ["Kremowy tulipan", "Tulipan w kolorze żaru", "Ogrodowy tulipan", "Jedwabisty tulipan"],
+			"tulip": [
+				"Kremowy tulipan",
+				"Tulipan w kolorze żaru",
+				"Ogrodowy tulipan",
+				"Jedwabisty tulipan"
+			],
 			"poppy": ["Polny mak", "Mak kukurydziany", "Letni mak", "Szkarłatny mak"],
-			"daisy": ["Trawnikowa stokrotka", "Łąkowa stokrotka", "Poranna stokrotka", "Angielska stokrotka"],
-			"sunflower": ["Złoty słonecznik", "Preriowy słonecznik", "Letni słonecznik", "Zwyczajny słonecznik"],
+			"daisy": [
+				"Trawnikowa stokrotka",
+				"Łąkowa stokrotka",
+				"Poranna stokrotka",
+				"Angielska stokrotka"
+			],
+			"sunflower": [
+				"Złoty słonecznik",
+				"Preriowy słonecznik",
+				"Letni słonecznik",
+				"Zwyczajny słonecznik"
+			],
 			"daffodil": ["Dziki żonkil", "Trąbkowy żonkil", "Żonkil wielkanocny", "Leśny żonkil"],
 			"iris": ["Brodaty irys", "Ogrodowy irys", "Irys flagowy", "Niemiecki irys"],
-			"lavender": ["Lawenda angielska", "Prawdziwa lawenda", "Ogrodowa lawenda", "Wąskolistna lawenda"],
-			"cosmos": ["Ogrodowy Kosmos", "Kosmos o wąskich liściach", "Kosmos łąkowy", "Kosmos pierzasty"],
-			"hibiscus": ["Hibiskus chiński", "Hibiskus tropikalny", "Szkarłatny hibiskus", "Wyspiarski hibiskus"],
+			"lavender": [
+				"Lawenda angielska",
+				"Prawdziwa lawenda",
+				"Ogrodowa lawenda",
+				"Wąskolistna lawenda"
+			],
+			"cosmos": [
+				"Ogrodowy Kosmos",
+				"Kosmos o wąskich liściach",
+				"Kosmos łąkowy",
+				"Kosmos pierzasty"
+			],
+			"hibiscus": [
+				"Hibiskus chiński",
+				"Hibiskus tropikalny",
+				"Szkarłatny hibiskus",
+				"Wyspiarski hibiskus"
+			],
 			"columbine": ["Zwyczajny orlik", "Europejski orlik", "Leśny orlik"],
 			"bluebell": ["Angielski dzwonek leśny", "Leśny hiacynt", "Pospolity hiacynt", "Dziki hiacynt"]
 		}
