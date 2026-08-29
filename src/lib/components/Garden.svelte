@@ -8,7 +8,7 @@
 	let { seeds, onSelect }: { seeds: Seed[]; onSelect: (seed: Seed) => void } = $props();
 </script>
 
-<div class="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3">
+<div class="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:px-8 lg:grid-cols-3">
 	{#each seeds as seed (seed)}
 		{@const flower = generateFlower(seed)}
 		{@const displayName = $t(`flowerNames.${flower.kind}.${flower.displayNameIndex}`)}

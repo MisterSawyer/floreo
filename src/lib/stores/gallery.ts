@@ -67,7 +67,7 @@ async function fetchGallery(): Promise<void> {
 			const data: unknown = await response.json();
 			if (!isGalleryResponse(data)) throw new Error('Gallery returned an invalid response');
 
-			confirmedSeeds = data.seeds;
+			confirmedSeeds = [...new Set(data.seeds)];
 		}
 		galleryError.set(false);
 		publishSeeds();
