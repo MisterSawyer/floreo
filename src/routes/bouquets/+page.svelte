@@ -44,11 +44,18 @@
 	function startHold(seed: Seed, event: PointerEvent) {
 		if (event.pointerType !== 'mouse') holdTimer = setTimeout(() => showPreview(seed), 500);
 	}
+
+	function preventPreviewScroll(node: HTMLElement) {
+		const prevent = (event: TouchEvent) => previewSeed !== null && event.preventDefault();
+		node.addEventListener('touchmove', prevent, { passive: false });
+		return { destroy: () => node.removeEventListener('touchmove', prevent) };
+	}
 </script>
 
 <svelte:head><title>{$t('ui.bouquetsTitle')} — Floreo</title></svelte:head>
 
 <main
+	use:preventPreviewScroll
 	class="min-h-dvh bg-[linear-gradient(155deg,#f5eee7_0%,#e9f1e6_54%,#d7e7d6_100%)] pb-16 text-emerald-950"
 >
 	<header class="mx-auto flex max-w-6xl items-start justify-between gap-4 px-4 py-6 sm:px-8">
@@ -173,12 +180,15 @@
 											type="button"
 											aria-label={`${displayName}, ${flower.botanicalName}`}
 											aria-describedby="flower-preview"
-											class="grid size-full place-items-center overflow-hidden rounded-2xl border border-white/80 bg-emerald-50/70 p-1 shadow-inner"
+											class="grid size-full touch-pan-y place-items-center overflow-hidden rounded-2xl border border-white/80 bg-emerald-50/70 p-1 shadow-inner select-none"
 											onpointerenter={(event) => event.pointerType === 'mouse' && showPreview(seed)}
 											onpointerleave={(event) => event.pointerType === 'mouse' && hidePreview()}
 											onpointerdown={(event) => startHold(seed, event)}
 											onpointerup={hidePreview}
-											onpointercancel={hidePreview}
+											onpointercancel={(event) =>
+												event.pointerType === 'touch' ? clearTimeout(holdTimer) : hidePreview()}
+											ontouchend={hidePreview}
+											ontouchcancel={hidePreview}
 											onfocus={(event) =>
 												event.currentTarget.matches(':focus-visible') && showPreview(seed)}
 											onblur={hidePreview}
