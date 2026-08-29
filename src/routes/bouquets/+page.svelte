@@ -156,7 +156,7 @@
 								type="button"
 								onclick={() => removeBouquet(bouquet)}
 								aria-label={$t('ui.removeBouquetAriaLabel', { name: bouquet.name })}
-								class="absolute top-3 right-3 grid size-8 shrink-0 place-items-center rounded-full bg-white/70 text-emerald-900/60 backdrop-blur-sm transition-colors hover:bg-white hover:text-rose-600 active:scale-95"
+								class="absolute top-3 right-3 z-10 grid size-8 shrink-0 place-items-center rounded-full bg-white/70 text-emerald-900/60 backdrop-blur-sm transition-colors hover:bg-white hover:text-rose-600 active:scale-95"
 							>
 								<svg viewBox="0 0 24 24" class="size-4" fill="none" aria-hidden="true">
 									<path
@@ -167,7 +167,11 @@
 									/>
 								</svg>
 							</button>
-							<h3 class="pr-8 font-serif text-xl">{bouquet.name}</h3>
+							<h3 class="pr-8 font-serif text-xl">
+								<a href={`/bouquets/${bouquet.id}`} class="after:absolute after:inset-0">
+									{bouquet.name}
+								</a>
+							</h3>
 							<p class="mt-1 text-xs font-semibold tracking-wide text-emerald-900/45 uppercase">
 								{$t('ui.bouquetFlowerCount', { count: bouquet.seeds.length })}
 							</p>
@@ -175,7 +179,7 @@
 								{#each bouquet.seeds as seed (seed)}
 									{@const flower = generateFlower(seed)}
 									{@const displayName = $t(`flowerNames.${flower.kind}.${flower.displayNameIndex}`)}
-									<li class="size-20 shrink-0">
+									<li class="relative z-10 size-20 shrink-0">
 										<button
 											type="button"
 											aria-label={`${displayName}, ${flower.botanicalName}`}

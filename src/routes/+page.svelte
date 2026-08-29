@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import { onMount, tick } from 'svelte';
 	import Flower from '$lib/components/Flower.svelte';
 	import Controls from '$lib/components/Controls.svelte';
 	import FallingPetals from '$lib/components/FallingPetals.svelte';
 	import { generateFlower } from '$lib/flower/flower';
+	import { canShareFlowerGif, renderFlowerGif, shareFlowerGif } from '$lib/flower/exportGif';
 	import { savedSeeds, saveFlower, removeFlower } from '$lib/stores/gallery';
 	import { t } from '$lib/i18n';
 	import type { Seed } from '$lib/flower/types';
@@ -22,6 +24,12 @@
 
 	let seed = $state(seedFromUrl());
 	let bloomKey = $state(0);
+	let flowerStage: HTMLButtonElement;
+	let exportStatus = $state<'preparing' | 'ready' | 'sharing' | 'shared' | 'unavailable' | 'error'>(
+		'preparing'
+	);
+	let preparedGif: Blob | undefined;
+	let preparationVersion = 0;
 
 	let flower = $derived(generateFlower(seed));
 	let saved = $derived($savedSeeds.includes(seed));
@@ -31,14 +39,47 @@
 		goto(`?seed=${seed}`, { replaceState: true, keepFocus: true, noScroll: true });
 	});
 
+	onMount(() => void prepareFlowerGif());
+
 	function regenerate() {
 		seed = randomSeed();
 		bloomKey++;
+		void prepareFlowerGif();
 	}
 
 	function toggleSave() {
 		if (saved) removeFlower(seed);
 		else saveFlower(seed);
+	}
+
+	async function prepareFlowerGif() {
+		const version = ++preparationVersion;
+		const filename = `floreo-${seed}.gif`;
+		preparedGif = undefined;
+		if (!canShareFlowerGif(new Blob(['GIF89a'], { type: 'image/gif' }), filename)) {
+			exportStatus = 'unavailable';
+			return;
+		}
+
+		exportStatus = 'preparing';
+		await tick();
+		const svg = flowerStage.querySelector<SVGSVGElement>('svg.flower');
+		if (!svg) return;
+		try {
+			const gif = await renderFlowerGif(svg, flower, () => version !== preparationVersion);
+			if (version !== preparationVersion) return;
+			preparedGif = gif;
+			exportStatus = 'ready';
+		} catch {
+			if (version !== preparationVersion) return;
+			exportStatus = 'error';
+		}
+	}
+
+	async function shareFlower() {
+		if (!preparedGif || exportStatus === 'sharing') return;
+		exportStatus = 'sharing';
+		exportStatus = await shareFlowerGif(preparedGif, `floreo-${seed}.gif`);
 	}
 </script>
 
@@ -55,6 +96,7 @@
 
 	<section class="specimen" aria-labelledby="flower-name">
 		<button
+			bind:this={flowerStage}
 			type="button"
 			onclick={() => bloomKey++}
 			aria-label={$t('ui.replayBloomAnimation')}
@@ -77,7 +119,13 @@
 	</section>
 </main>
 
-<Controls onRegenerate={regenerate} onSave={toggleSave} {saved} />
+<Controls
+	onRegenerate={regenerate}
+	onSave={toggleSave}
+	onExport={shareFlower}
+	{exportStatus}
+	{saved}
+/>
 
 <style>
 	:global(html) {

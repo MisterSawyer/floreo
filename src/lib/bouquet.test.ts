@@ -11,6 +11,7 @@ describe('bouquet validation', () => {
 
 		expect(bouquets).toEqual([{ id: 'one', name: 'Summer table', seeds: [7, 12] }]);
 		expect(bouquetNameExists(' SUMMER TABLE ', bouquets)).toBe(true);
+		expect(bouquetNameExists(' SUMMER TABLE ', bouquets, 'one')).toBe(false);
 	});
 
 	it('rejects invalid bouquet input', () => {

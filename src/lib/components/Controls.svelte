@@ -4,8 +4,16 @@
 	let {
 		onRegenerate,
 		onSave,
+		onExport,
+		exportStatus,
 		saved
-	}: { onRegenerate: () => void; onSave: () => void; saved: boolean } = $props();
+	}: {
+		onRegenerate: () => void;
+		onSave: () => void;
+		onExport: () => void;
+		exportStatus: 'preparing' | 'ready' | 'sharing' | 'shared' | 'unavailable' | 'error';
+		saved: boolean;
+	} = $props();
 </script>
 
 <div
@@ -74,5 +82,57 @@
 				/>
 			</svg>
 		</a>
+
+		<div class="mx-1 h-8 w-px bg-emerald-950/15" aria-hidden="true"></div>
+
+		<button
+			type="button"
+			onclick={onExport}
+			disabled={exportStatus === 'preparing' ||
+				exportStatus === 'sharing' ||
+				exportStatus === 'unavailable'}
+			aria-label={$t(
+				exportStatus === 'preparing'
+					? 'ui.prepareFlowerGif'
+					: exportStatus === 'sharing'
+						? 'ui.shareFlowerGifInProgress'
+						: exportStatus === 'shared'
+							? 'ui.flowerGifShared'
+							: exportStatus === 'unavailable'
+								? 'ui.flowerGifShareUnavailable'
+								: exportStatus === 'error'
+									? 'ui.flowerGifShareFailed'
+									: 'ui.shareFlowerGif'
+			)}
+			class="grid size-12 shrink-0 place-items-center rounded-[1.2rem] bg-emerald-50 text-emerald-800 transition-transform hover:bg-emerald-100 active:scale-95 disabled:cursor-wait disabled:opacity-55"
+		>
+			{#if exportStatus === 'preparing' || exportStatus === 'sharing'}
+				<span class="size-5 animate-spin rounded-full border-2 border-current border-t-transparent"
+				></span>
+			{:else if exportStatus === 'shared'}
+				<svg viewBox="0 0 24 24" class="size-5" fill="none" aria-hidden="true">
+					<path
+						d="m5 12 4 4L19 6"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</svg>
+			{:else if exportStatus === 'ready'}
+				<svg viewBox="0 0 24 24" class="size-5" fill="none" aria-hidden="true">
+					<path
+						d="M8 12.5 16 8m-8 3.5 8 4.5M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm13-5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
+						stroke="currentColor"
+						stroke-width="1.8"
+						stroke-linecap="round"
+					/>
+				</svg>
+			{:else if exportStatus === 'error' || exportStatus === 'unavailable'}
+				<svg viewBox="0 0 24 24" class="size-5" fill="none" aria-hidden="true">
+					<path d="M12 7v6m0 4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+				</svg>
+			{/if}
+		</button>
 	</div>
 </div>

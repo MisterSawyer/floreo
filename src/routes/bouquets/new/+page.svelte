@@ -1,9 +1,16 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { MAX_BOUQUET_NAME_LENGTH } from '$lib/bouquet';
 	import Flower from '$lib/components/Flower.svelte';
 	import { FLOWER_KINDS, generateFlower } from '$lib/flower/flower';
-	import { bouquetNameExists, bouquets, createBouquet } from '$lib/stores/bouquets';
+	import {
+		bouquetNameExists,
+		bouquets,
+		bouquetsLoading,
+		createBouquet,
+		updateBouquet
+	} from '$lib/stores/bouquets';
 	import { galleryLoading, savedSeeds } from '$lib/stores/gallery';
 	import { t } from '$lib/i18n';
 	import type { FlowerKind, Seed } from '$lib/flower/types';
@@ -13,18 +20,32 @@
 	let saving = $state(false);
 	let saveFailed = $state(false);
 	let duplicateName = $state(false);
-	let name = $derived(page.url.searchParams.get('name')?.trim() ?? '');
-	let nameTaken = $derived(bouquetNameExists(name, $bouquets));
+	let initializedBouquetId = $state<string | null>(null);
+	let name = $state(page.url.searchParams.get('name')?.trim() ?? '');
+	let editingId = $derived(page.params.id);
+	let bouquet = $derived(editingId ? $bouquets.find(({ id }) => id === editingId) : undefined);
+	let nameTaken = $derived(bouquetNameExists(name, $bouquets, bouquet?.id));
 	let nameUnavailable = $derived(nameTaken || duplicateName);
-	let seedKinds = $derived($savedSeeds.map((seed) => ({ seed, kind: generateFlower(seed).kind })));
+	let availableSeeds = $derived([...new Set([...$savedSeeds, ...(bouquet?.seeds ?? [])])]);
+	let seedKinds = $derived(
+		availableSeeds.map((seed) => ({ seed, kind: generateFlower(seed).kind }))
+	);
 	let presentKinds = $derived(
 		FLOWER_KINDS.filter((kind) => seedKinds.some((flower) => flower.kind === kind))
 	);
 	let filteredSeeds = $derived(
 		selectedKind
 			? seedKinds.filter((flower) => flower.kind === selectedKind).map((flower) => flower.seed)
-			: $savedSeeds
+			: availableSeeds
 	);
+
+	$effect(() => {
+		if (bouquet && initializedBouquetId !== bouquet.id) {
+			name = bouquet.name;
+			selected = new Set(bouquet.seeds);
+			initializedBouquetId = bouquet.id;
+		}
+	});
 
 	function toggle(seed: Seed) {
 		selected = new Set(selected);
@@ -33,11 +54,15 @@
 	}
 
 	async function save() {
+		name = name.trim();
+		if (editingId && !bouquet) return;
 		saving = true;
 		saveFailed = false;
 		duplicateName = false;
-		const result = await createBouquet(name, [...selected]);
-		if (result === 'created') await goto('/bouquets');
+		const result = bouquet
+			? await updateBouquet(bouquet, name, [...selected])
+			: await createBouquet(name, [...selected]);
+		if (result === 'created' || result === 'updated') await goto('/bouquets');
 		else {
 			duplicateName = result === 'duplicate';
 			saveFailed = !duplicateName;
@@ -56,9 +81,17 @@
 			<p class="m-0 text-[0.62rem] font-bold tracking-[0.15em] text-emerald-900/45 uppercase">
 				{$t('ui.chooseFlowers')}
 			</p>
-			<h1 class="mt-1 font-serif text-3xl font-normal tracking-tight">
-				{name || $t('ui.nameYourBouquet')}
-			</h1>
+			<h1 class="sr-only">{name || $t('ui.nameYourBouquet')}</h1>
+			<input
+				id="bouquet-name"
+				bind:value={name}
+				required
+				maxlength={MAX_BOUQUET_NAME_LENGTH}
+				aria-label={$t('ui.nameYourBouquet')}
+				aria-invalid={nameUnavailable}
+				placeholder={$t('ui.bouquetNamePlaceholder')}
+				class="mt-1 min-h-11 w-full max-w-xl rounded-full border border-white/80 bg-white/55 px-5 font-serif text-xl outline-none placeholder:text-emerald-900/35 focus:ring-2 focus:ring-emerald-700/35 sm:text-2xl"
+			/>
 			<p class="mt-1 text-sm text-emerald-900/55">
 				{$t('ui.flowersSelected', { count: selected.size })}
 			</p>
@@ -79,9 +112,17 @@
 	</header>
 
 	<div class="mx-auto max-w-6xl">
-		{#if $galleryLoading && $savedSeeds.length === 0}
+		{#if editingId && $bouquetsLoading}
+			<p class="py-24 text-center font-serif text-2xl" role="status">
+				{$t('ui.loadingBouquets')}
+			</p>
+		{:else if editingId && !bouquet}
+			<p class="py-24 text-center font-serif text-2xl" role="alert">
+				{$t('ui.bouquetLoadError')}
+			</p>
+		{:else if $galleryLoading && availableSeeds.length === 0}
 			<p class="py-24 text-center font-serif text-2xl" role="status">{$t('ui.loadingGarden')}</p>
-		{:else if $savedSeeds.length === 0}
+		{:else if availableSeeds.length === 0}
 			<div class="px-4 py-20 text-center">
 				<p class="font-serif text-2xl">{$t('ui.bouquetNeedsFlowers')}</p>
 				<a
@@ -170,7 +211,11 @@
 			<button
 				type="button"
 				onclick={save}
-				disabled={!name || nameUnavailable || selected.size === 0 || saving}
+				disabled={!name.trim() ||
+					nameUnavailable ||
+					selected.size === 0 ||
+					saving ||
+					(!!editingId && !bouquet)}
 				class="min-h-14 rounded-full bg-emerald-950 px-8 text-sm font-semibold text-white shadow-[0_18px_55px_rgb(31_74_53/0.25)] transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
 			>
 				{saving ? $t('ui.savingBouquet') : $t('ui.saveBouquet')} · {selected.size}

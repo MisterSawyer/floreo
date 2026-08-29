@@ -1,6 +1,6 @@
 import type { Config } from '@netlify/functions';
 import { parseBouquetInput, parseBouquetName } from '../../src/lib/bouquet.ts';
-import { listBouquets, removeBouquet, saveBouquet } from '../lib/bouquets.ts';
+import { listBouquets, removeBouquet, saveBouquet, updateBouquet } from '../lib/bouquets.ts';
 
 const RESPONSE_HEADERS = {
 	'Cache-Control': 'no-store',
@@ -37,6 +37,31 @@ export default async (request: Request): Promise<Response> => {
 					: json({ error: 'A bouquet with this name already exists.' }, { status: 409 });
 			}
 
+			case 'PUT': {
+				let body: unknown;
+				try {
+					body = await request.json();
+				} catch {
+					return json({ error: 'A valid bouquet is required.' }, { status: 400 });
+				}
+
+				const input = parseBouquetInput(body);
+				const previousName =
+					typeof body === 'object' && body !== null && 'previousName' in body
+						? parseBouquetName(body.previousName)
+						: null;
+				if (!input || !previousName) {
+					return json({ error: 'A valid bouquet is required.' }, { status: 400 });
+				}
+
+				const bouquet = await updateBouquet(previousName, input);
+				if (bouquet === 'missing') return json({ error: 'Bouquet not found.' }, { status: 404 });
+				if (bouquet === 'duplicate') {
+					return json({ error: 'A bouquet with this name already exists.' }, { status: 409 });
+				}
+				return json({ bouquet });
+			}
+
 			case 'DELETE': {
 				let body: unknown;
 				try {
@@ -58,7 +83,7 @@ export default async (request: Request): Promise<Response> => {
 			default:
 				return json(
 					{ error: 'Method not allowed.' },
-					{ status: 405, headers: { Allow: 'GET, POST, DELETE' } }
+					{ status: 405, headers: { Allow: 'GET, POST, PUT, DELETE' } }
 				);
 		}
 	} catch (error) {

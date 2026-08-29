@@ -41,6 +41,31 @@ export async function saveBouquet(input: BouquetInput): Promise<Bouquet | null> 
 	return modified ? bouquet : null;
 }
 
+export async function updateBouquet(
+	previousName: string,
+	input: BouquetInput
+): Promise<Bouquet | 'missing' | 'duplicate'> {
+	const parsed = parseBouquetInput(input);
+	if (!parsed) return 'missing';
+
+	const store = getBouquetStore();
+	const previousKey = await bouquetKey(previousName);
+	const current = parseBouquets([await store.get(previousKey, { type: 'json' })])[0];
+	if (!current) return 'missing';
+
+	const bouquet = { id: current.id, ...parsed };
+	const nextKey = await bouquetKey(bouquet.name);
+	if (nextKey === previousKey) {
+		await store.setJSON(nextKey, bouquet);
+		return bouquet;
+	}
+
+	const { modified } = await store.setJSON(nextKey, bouquet, { onlyIfNew: true });
+	if (!modified) return 'duplicate';
+	await store.delete(previousKey);
+	return bouquet;
+}
+
 export async function removeBouquet(name: string): Promise<void> {
 	await getBouquetStore().delete(await bouquetKey(name));
 }

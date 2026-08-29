@@ -7,7 +7,7 @@ const BOUQUETS_ENDPOINT = '/api/bouquets';
 // ponytail: Netlify functions aren't served by `vite dev`, so bouquets stay local during development.
 const DEV_STORAGE_KEY = 'floreo:bouquets';
 
-export type CreateBouquetResult = 'created' | 'duplicate' | 'invalid' | 'error';
+export type SaveBouquetResult = 'created' | 'updated' | 'duplicate' | 'invalid' | 'error';
 
 let confirmedBouquets: Bouquet[] = [];
 let loadPromise: Promise<void> | undefined;
@@ -61,7 +61,7 @@ export function loadBouquets(force = false): Promise<void> {
 	return loadPromise;
 }
 
-export async function createBouquet(name: string, seeds: Seed[]): Promise<CreateBouquetResult> {
+export async function createBouquet(name: string, seeds: Seed[]): Promise<SaveBouquetResult> {
 	await loadBouquets();
 	const input = parseBouquetInput({ name, seeds });
 	if (!input) return 'invalid';
@@ -98,6 +98,54 @@ export async function createBouquet(name: string, seeds: Seed[]): Promise<Create
 		return 'created';
 	} catch (error) {
 		console.error('Could not save bouquet', error);
+		bouquetsError.set(true);
+		return 'error';
+	}
+}
+
+export async function updateBouquet(
+	bouquet: Bouquet,
+	name: string,
+	seeds: Seed[]
+): Promise<SaveBouquetResult> {
+	await loadBouquets();
+	const input = parseBouquetInput({ name, seeds });
+	if (!input || !confirmedBouquets.some(({ id }) => id === bouquet.id)) return 'invalid';
+	if (bouquetNameExists(input.name, confirmedBouquets, bouquet.id)) return 'duplicate';
+
+	try {
+		let updated: Bouquet;
+		if (import.meta.env.DEV) {
+			updated = { id: bouquet.id, ...input };
+		} else {
+			const response = await fetch(BOUQUETS_ENDPOINT, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ previousName: bouquet.name, ...input })
+			});
+			if (response.status === 409) return 'duplicate';
+			if (!response.ok) throw new Error(`Bouquets request failed with ${response.status}`);
+
+			const data: unknown = await response.json();
+			const parsed =
+				typeof data === 'object' && data !== null && 'bouquet' in data
+					? parseBouquets([data.bouquet])[0]
+					: undefined;
+			if (!parsed) throw new Error('Bouquets returned an invalid response');
+			updated = parsed;
+		}
+
+		confirmedBouquets = confirmedBouquets.map((saved) =>
+			saved.id === bouquet.id ? updated : saved
+		);
+		if (import.meta.env.DEV) {
+			localStorage.setItem(DEV_STORAGE_KEY, JSON.stringify(confirmedBouquets));
+		}
+		bouquets.set(confirmedBouquets);
+		bouquetsError.set(false);
+		return 'updated';
+	} catch (error) {
+		console.error('Could not update bouquet', error);
 		bouquetsError.set(true);
 		return 'error';
 	}

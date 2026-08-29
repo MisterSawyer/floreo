@@ -63,10 +63,12 @@ export function parseBouquets(value: unknown): Bouquet[] {
 	});
 }
 
-export function bouquetNameExists(name: string, bouquets: Bouquet[]): boolean {
+export function bouquetNameExists(name: string, bouquets: Bouquet[], exceptId?: string): boolean {
 	const normalized = normalizeBouquetName(name);
 	return (
 		normalized !== '' &&
-		bouquets.some((bouquet) => normalizeBouquetName(bouquet.name) === normalized)
+		bouquets.some(
+			(bouquet) => bouquet.id !== exceptId && normalizeBouquetName(bouquet.name) === normalized
+		)
 	);
 }
