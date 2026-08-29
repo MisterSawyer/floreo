@@ -36,6 +36,7 @@
 	let displayName = $derived($t(`flowerNames.${flower.kind}.${flower.displayNameIndex}`));
 
 	$effect(() => {
+		if (page.url.searchParams.get('seed') === String(seed)) return;
 		goto(`?seed=${seed}`, { replaceState: true, keepFocus: true, noScroll: true });
 	});
 
@@ -114,7 +115,6 @@
 				<span class="species-pill">{flower.botanicalName}</span>
 			</div>
 			<h1 id="flower-name">{displayName}</h1>
-			<span class="seed-label">{$t('ui.seed')} {flower.seed}</span>
 		</div>
 	</section>
 </main>
@@ -148,10 +148,12 @@
 	.garden-scene {
 		position: relative;
 		display: grid;
+		grid-template: minmax(0, 1fr) / minmax(0, 1fr);
 		height: 100dvh;
 		overflow: hidden;
 		place-items: center;
-		padding: 1rem 1rem 7rem;
+		/* Action panel top: safe-area + 9rem stack. Keep the name 1.5rem above it. */
+		padding: 1rem 1rem calc(env(safe-area-inset-bottom) + 10.5rem);
 		background:
 			radial-gradient(circle at 50% 27%, rgb(255 255 249 / 0.96) 0 14%, transparent 43%),
 			linear-gradient(165deg, #f5eee6 0%, #edf4e9 50%, #d7e7d6 100%);
@@ -202,19 +204,29 @@
 		position: relative;
 		z-index: 2;
 		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: minmax(0, 1fr) auto;
+		gap: 0.5rem;
 		width: min(100%, 52rem);
+		align-self: stretch;
 		place-items: center;
 	}
 
 	.flower-stage {
 		position: relative;
 		display: grid;
-		width: min(92vw, 58dvh, 26rem);
+		align-self: stretch;
+		min-height: 0;
+		aspect-ratio: 290 / 330;
 		cursor: pointer;
 		place-items: center;
 		border: 0;
 		background: transparent;
 		-webkit-tap-highlight-color: transparent;
+	}
+	.flower-stage :global(.flower) {
+		height: 100%;
+		max-width: none;
 	}
 	.flower-stage:focus-visible {
 		border-radius: 50%;
@@ -244,7 +256,6 @@
 
 	.specimen-label {
 		z-index: 2;
-		margin-top: 0.5rem;
 		text-align: center;
 	}
 	.species-row {
@@ -252,12 +263,6 @@
 		align-items: center;
 		justify-content: center;
 		gap: 0.65rem;
-	}
-	.seed-label {
-		font-size: 0.62rem;
-		font-weight: 700;
-		letter-spacing: 0.13em;
-		text-transform: uppercase;
 	}
 	.species-pill {
 		padding: 0.28rem 0.6rem;
@@ -269,11 +274,6 @@
 		font-style: italic;
 		letter-spacing: 0.015em;
 		opacity: 0.68;
-	}
-	.seed-label {
-		display: block;
-		margin-top: 0.75rem;
-		opacity: 0.38;
 	}
 	.specimen-label h1 {
 		margin: 0.5rem 0 0;

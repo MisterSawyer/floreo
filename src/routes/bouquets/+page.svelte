@@ -1,21 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { fly } from 'svelte/transition';
-	import { MAX_BOUQUET_NAME_LENGTH } from '$lib/bouquet';
 	import Flower from '$lib/components/Flower.svelte';
 	import { generateFlower } from '$lib/flower/flower';
-	import {
-		bouquetNameExists,
-		bouquets,
-		bouquetsError,
-		bouquetsLoading,
-		removeBouquet
-	} from '$lib/stores/bouquets';
+	import { bouquets, bouquetsError, bouquetsLoading, removeBouquet } from '$lib/stores/bouquets';
+	import { navBar } from '$lib/stores/navBar.svelte';
 	import { t } from '$lib/i18n';
 	import type { Seed } from '$lib/flower/types';
 
-	let name = $state('');
-	let nameTaken = $derived(bouquetNameExists(name, $bouquets));
 	let previewSeed = $state<Seed | null>(null);
 	let previewElement: HTMLDivElement;
 	let holdTimer: ReturnType<typeof setTimeout> | undefined;
@@ -23,12 +14,6 @@
 	let previewName = $derived(
 		previewFlower ? $t(`flowerNames.${previewFlower.kind}.${previewFlower.displayNameIndex}`) : ''
 	);
-
-	function start(event: SubmitEvent) {
-		event.preventDefault();
-		name = name.trim();
-		if (name && !nameTaken) goto(`/bouquets/new?name=${encodeURIComponent(name)}`);
-	}
 
 	function showPreview(seed: Seed) {
 		previewSeed = seed;
@@ -50,92 +35,54 @@
 		node.addEventListener('touchmove', prevent, { passive: false });
 		return { destroy: () => node.removeEventListener('touchmove', prevent) };
 	}
+
+	$effect(() => {
+		navBar.trailing = trailingActions;
+		return () => {
+			if (navBar.trailing === trailingActions) navBar.trailing = null;
+		};
+	});
 </script>
+
+{#snippet trailingActions()}
+	<a
+		href="/bouquets/new"
+		aria-label={$t('ui.createBouquet')}
+		class="grid size-10 shrink-0 place-items-center rounded-[1rem] bg-emerald-50 text-emerald-800 transition-transform hover:bg-emerald-100 active:scale-95"
+	>
+		<svg viewBox="0 0 24 24" class="size-5" fill="none" aria-hidden="true">
+			<path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+		</svg>
+	</a>
+{/snippet}
 
 <svelte:head><title>{$t('ui.bouquetsTitle')} — Floreo</title></svelte:head>
 
 <main
 	use:preventPreviewScroll
-	class="min-h-dvh bg-[linear-gradient(155deg,#f5eee7_0%,#e9f1e6_54%,#d7e7d6_100%)] pb-16 text-emerald-950"
+	class="min-h-dvh bg-[linear-gradient(155deg,#f5eee7_0%,#e9f1e6_54%,#d7e7d6_100%)] pb-40 text-emerald-950"
 >
-	<header class="mx-auto flex max-w-6xl items-start justify-between gap-4 px-4 py-6 sm:px-8">
-		<div>
-			<p class="m-0 text-[0.62rem] font-bold tracking-[0.15em] text-emerald-900/45 uppercase">
-				{$t('ui.yourCollection')}
-			</p>
-			<div class="mt-1 flex items-center gap-3">
-				<h1 class="font-serif text-3xl font-normal tracking-tight">
-					{$t('ui.bouquetsHeading')}
-				</h1>
-				{#if $bouquets.length > 0}
-					<span
-						class="grid size-9 shrink-0 place-items-center rounded-full border border-white/70 bg-white/40 text-sm font-semibold shadow-inner backdrop-blur-md"
-						aria-label={$t('ui.totalBouquetsCount', { count: $bouquets.length })}
-					>
-						{$bouquets.length}
-					</span>
-				{/if}
-			</div>
+	<header class="mx-auto max-w-6xl px-4 py-6 sm:px-8">
+		<p class="m-0 text-[0.62rem] font-bold tracking-[0.15em] text-emerald-900/45 uppercase">
+			{$t('ui.yourCollection')}
+		</p>
+		<div class="mt-1 flex items-center gap-3">
+			<h1 class="font-serif text-3xl font-normal tracking-tight">
+				{$t('ui.bouquetsHeading')}
+			</h1>
+			{#if $bouquets.length > 0}
+				<span
+					class="grid size-9 shrink-0 place-items-center rounded-full border border-white/70 bg-white/40 text-sm font-semibold shadow-inner backdrop-blur-md"
+					aria-label={$t('ui.totalBouquetsCount', { count: $bouquets.length })}
+				>
+					{$bouquets.length}
+				</span>
+			{/if}
 		</div>
-		<a
-			href="/gallery"
-			aria-label={$t('ui.backToGarden')}
-			class="mt-4 grid size-12 shrink-0 place-items-center rounded-full border border-white/70 bg-white/45 shadow-sm backdrop-blur-md transition-colors hover:bg-white/65"
-		>
-			<svg viewBox="0 0 24 24" class="size-6" fill="none" aria-hidden="true">
-				<path d="M4 19.5V10m8 9.5V5m8 14.5V8" stroke="currentColor" stroke-width="1.7" />
-				<path
-					d="M4 12c-3-2-3.2-5.1 0-6 3.2.9 3 4 0 6Zm8-4c-3.3-2.2-3.4-5.6 0-6.5 3.4.9 3.3 4.3 0 6.5Zm8 3c-3-2-3.2-5.1 0-6 3.2.9 3 4 0 6Z"
-					stroke="currentColor"
-					stroke-width="1.5"
-					stroke-linejoin="round"
-				/>
-			</svg>
-		</a>
 	</header>
 
 	<div class="mx-auto max-w-6xl px-4 sm:px-8">
-		<form
-			onsubmit={start}
-			class="rounded-[2rem] border border-white/70 bg-white/40 p-5 shadow-sm backdrop-blur-sm"
-		>
-			<label for="bouquet-name" class="block font-serif text-xl">
-				{$t('ui.createNewBouquet')}
-			</label>
-			<div class="mt-3 flex flex-col gap-3 sm:flex-row">
-				<div class="relative min-w-0 flex-1">
-					<input
-						id="bouquet-name"
-						bind:value={name}
-						required
-						maxlength={MAX_BOUQUET_NAME_LENGTH}
-						aria-invalid={nameTaken}
-						aria-describedby={nameTaken ? 'bouquet-name-warning' : undefined}
-						placeholder={$t('ui.bouquetNamePlaceholder')}
-						class="min-h-12 w-full rounded-full border border-white/80 bg-white/70 px-5 outline-none placeholder:text-emerald-900/35 focus:ring-2 focus:ring-emerald-700/35"
-					/>
-					{#if nameTaken}
-						<p
-							id="bouquet-name-warning"
-							class="absolute top-full left-4 z-20 mt-2 w-max max-w-[calc(100vw-4rem)] rounded-xl border border-amber-200/60 bg-amber-50/95 px-3 py-2 text-sm text-amber-800/70 shadow-lg backdrop-blur-sm"
-							role="status"
-							transition:fly={{ y: -12, duration: 320 }}
-						>
-							{$t('ui.bouquetNameTaken')}
-						</p>
-					{/if}
-				</div>
-				<button
-					type="submit"
-					disabled={!name.trim() || nameTaken || $bouquetsLoading}
-					class="min-h-12 rounded-full bg-emerald-950 px-6 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40"
-				>
-					{$t('ui.createBouquet')}
-				</button>
-			</div>
-		</form>
-
-		<section class="mt-10">
+		<section class="mt-2">
 			{#if $bouquetsLoading}
 				<p class="mt-2 text-sm text-emerald-900/55" role="status">
 					{$t('ui.loadingBouquets')}
@@ -149,14 +96,20 @@
 			{:else}
 				<div class="mt-4 grid gap-4 sm:grid-cols-2">
 					{#each $bouquets as bouquet (bouquet.id)}
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<!-- svelte-ignore a11y_no_noninteractive_element_interactions (The title link provides keyboard access.) -->
 						<article
-							class="relative rounded-[2rem] border border-white/70 bg-white/45 p-5 shadow-sm backdrop-blur-sm"
+							onclick={(event) =>
+								event.target instanceof Element &&
+								!event.target.closest('button, a') &&
+								goto(`/bouquets/${bouquet.id}`)}
+							class="relative cursor-pointer rounded-[2rem] border border-white/70 bg-white/45 p-5 shadow-sm backdrop-blur-sm"
 						>
 							<button
 								type="button"
 								onclick={() => removeBouquet(bouquet)}
 								aria-label={$t('ui.removeBouquetAriaLabel', { name: bouquet.name })}
-								class="absolute top-3 right-3 z-10 grid size-8 shrink-0 place-items-center rounded-full bg-white/70 text-emerald-900/60 backdrop-blur-sm transition-colors hover:bg-white hover:text-rose-600 active:scale-95"
+								class="absolute top-3 right-3 grid size-8 shrink-0 place-items-center rounded-full bg-white/70 text-emerald-900/60 backdrop-blur-sm transition-colors hover:bg-white hover:text-rose-600 active:scale-95"
 							>
 								<svg viewBox="0 0 24 24" class="size-4" fill="none" aria-hidden="true">
 									<path
@@ -168,9 +121,7 @@
 								</svg>
 							</button>
 							<h3 class="pr-8 font-serif text-xl">
-								<a href={`/bouquets/${bouquet.id}`} class="after:absolute after:inset-0">
-									{bouquet.name}
-								</a>
+								<a href={`/bouquets/${bouquet.id}`}>{bouquet.name}</a>
 							</h3>
 							<p class="mt-1 text-xs font-semibold tracking-wide text-emerald-900/45 uppercase">
 								{$t('ui.bouquetFlowerCount', { count: bouquet.seeds.length })}
@@ -179,7 +130,7 @@
 								{#each bouquet.seeds as seed (seed)}
 									{@const flower = generateFlower(seed)}
 									{@const displayName = $t(`flowerNames.${flower.kind}.${flower.displayNameIndex}`)}
-									<li class="relative z-10 size-20 shrink-0">
+									<li class="size-20 shrink-0">
 										<button
 											type="button"
 											aria-label={`${displayName}, ${flower.botanicalName}`}

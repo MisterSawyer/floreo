@@ -1,0 +1,17 @@
+- generic [ref=e2]:
+  - main [ref=e3]:
+    - region [ref=e7]:
+      - button "Replay the bloom animation" [ref=e8] [cursor=pointer]:
+        - img "Procedurally generated Island hibiscus" [ref=e11]
+      - generic [ref=e142]:
+        - generic [ref=e143]: Hibiscus rosa-sinensis
+        - heading "Island hibiscus" [level=1] [ref=e145]
+        - generic [ref=e146]: seed 2689059432
+  - generic [ref=e149]:
+    - link "Grow another flower" [ref=e150] [cursor=pointer]:
+      - /url: /
+    - link "Open saved garden" [ref=e161] [cursor=pointer]:
+      - /url: /gallery
+    - link "Bouquets" [ref=e165] [cursor=pointer]:
+      - /url: /bouquets
+  - button "Switch language" [ref=e173]

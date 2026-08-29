@@ -5,6 +5,8 @@
 :root {
 	/* Preserve authored flower colors when Android offers algorithmic darkening. */
 	color-scheme: only light;
+	/* Reserve scrollbar space on every page so fixed bottom panels never shift X position. */
+	scrollbar-gutter: stable;
 }
 
 html,

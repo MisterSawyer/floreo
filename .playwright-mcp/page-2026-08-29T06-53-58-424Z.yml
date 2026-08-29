@@ -1,0 +1,15 @@
+- generic [ref=f5e2]:
+  - main [ref=f5e3]:
+    - generic [ref=f5e5]:
+      - paragraph [ref=f5e6]: Your collection
+      - heading "Wika's garden" [level=1] [ref=f5e8]
+    - status [ref=f5e10]:
+      - paragraph [ref=f5e11]: Loading your garden…
+  - generic [ref=f5e14]:
+    - link "Grow another flower" [ref=f5e15] [cursor=pointer]:
+      - /url: /
+    - link "Open saved garden" [ref=f5e26] [cursor=pointer]:
+      - /url: /gallery
+    - link "Bouquets" [ref=f5e30] [cursor=pointer]:
+      - /url: /bouquets
+  - button "Switch language" [ref=f5e38]

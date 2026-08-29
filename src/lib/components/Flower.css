@@ -497,7 +497,7 @@
 .lavender-spike-axis {
 	fill: none;
 	stroke-width: 2px;
-	stroke-linecap: square;
+	stroke-linecap: butt;
 	stroke-dasharray: 1;
 	stroke-dashoffset: 1;
 	animation: stem-grow var(--lavender-spike-duration) linear forwards;

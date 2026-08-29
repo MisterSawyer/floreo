@@ -27,9 +27,9 @@
 </svelte:head>
 
 <main
-	class="min-h-dvh bg-[linear-gradient(155deg,#f5eee7_0%,#e9f1e6_54%,#d7e7d6_100%)] pb-12 text-emerald-950"
+	class="min-h-dvh bg-[linear-gradient(155deg,#f5eee7_0%,#e9f1e6_54%,#d7e7d6_100%)] pb-28 text-emerald-950"
 >
-	<header class="mx-auto flex max-w-6xl items-start justify-between gap-4 px-4 py-6 sm:px-8">
+	<header class="mx-auto max-w-6xl px-4 py-6 sm:px-8">
 		<div>
 			<p class="m-0 text-[0.62rem] font-bold tracking-[0.15em] text-emerald-900/45 uppercase">
 				{$t('ui.yourCollection')}
@@ -62,51 +62,6 @@
 					</p>
 				</div>
 			{/if}
-		</div>
-		<div class="mt-4 flex items-center gap-2">
-			<a
-				href="/"
-				aria-label={$t('ui.growAnotherFlower')}
-				class="grid size-12 shrink-0 place-items-center rounded-full border border-white/40 bg-white/35 text-emerald-950 shadow-[0_18px_55px_rgb(31_74_53/0.18),inset_0_1px_rgb(255_255_255/0.6)] backdrop-blur-2xl backdrop-saturate-150 transition-transform active:scale-95"
-			>
-				<svg viewBox="0 0 24 24" class="size-9" aria-hidden="true">
-					<g fill="currentColor">
-						{#each [0, 60, 120, 180, 240, 300] as angle}
-							<ellipse
-								cx="12"
-								cy="6.8"
-								rx="2.1"
-								ry="3.4"
-								transform="rotate({angle} 12 12)"
-								opacity="0.9"
-							/>
-						{/each}
-					</g>
-					<circle cx="12" cy="12" r="2.6" fill="white" />
-					<circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="0.6" />
-				</svg>
-			</a>
-			<a
-				href="/bouquets"
-				aria-label={$t('ui.bouquets')}
-				class="grid size-12 shrink-0 place-items-center rounded-full border border-white/70 bg-white/40 backdrop-blur-md transition-colors hover:bg-white/60"
-			>
-				<svg viewBox="0 0 24 24" class="size-8" fill="none" aria-hidden="true">
-					<rect
-						x="4"
-						y="3"
-						width="16"
-						height="18"
-						rx="3"
-						stroke="currentColor"
-						stroke-width="1.6"
-					/>
-					<circle cx="9" cy="8" r="1.2" fill="currentColor" />
-					<circle cx="15" cy="8" r="1.2" fill="currentColor" />
-					<circle cx="9" cy="16" r="1.2" fill="currentColor" />
-					<circle cx="15" cy="16" r="1.2" fill="currentColor" />
-				</svg>
-			</a>
 		</div>
 	</header>
 

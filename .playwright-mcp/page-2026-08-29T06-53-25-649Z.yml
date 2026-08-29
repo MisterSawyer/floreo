@@ -1,0 +1,17 @@
+- generic [ref=f1e2]:
+  - main [ref=f1e3]:
+    - region [ref=f1e7]:
+      - button "Replay the bloom animation" [ref=f1e8] [cursor=pointer]:
+        - img "Procedurally generated Garden cosmos" [ref=f1e11]
+      - generic [ref=f1e253]:
+        - generic [ref=f1e254]: Cosmos bipinnatus
+        - heading "Garden cosmos" [level=1] [ref=f1e256]
+        - generic [ref=f1e257]: seed 2316869559
+  - generic [ref=f1e260]:
+    - link "Grow another flower" [ref=f1e261] [cursor=pointer]:
+      - /url: /
+    - link "Open saved garden" [ref=f1e272] [cursor=pointer]:
+      - /url: /gallery
+    - link "Bouquets" [ref=f1e276] [cursor=pointer]:
+      - /url: /bouquets
+  - button "Switch language" [ref=f1e284]

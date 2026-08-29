@@ -1,0 +1,14 @@
+- generic [ref=f2e2]:
+  - main [ref=f2e3]:
+    - generic [ref=f2e4]:
+      - paragraph [ref=f2e5]: Your collection
+      - heading "Bouquets" [level=1] [ref=f2e7]
+    - status [ref=f2e10]: Loading bouquets…
+  - generic [ref=f2e13]:
+    - link "Grow another flower" [ref=f2e14] [cursor=pointer]:
+      - /url: /
+    - link "Open saved garden" [ref=f2e25] [cursor=pointer]:
+      - /url: /gallery
+    - link "Bouquets" [ref=f2e29] [cursor=pointer]:
+      - /url: /bouquets
+  - button "Switch language" [ref=f2e37]

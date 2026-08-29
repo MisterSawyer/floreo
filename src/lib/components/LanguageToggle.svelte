@@ -41,8 +41,18 @@
 
 <div
 	class="fixed right-3 z-40 flex flex-col items-end gap-2"
-	style:bottom="calc(env(safe-area-inset-bottom) + 0.75rem)"
+	style:top="calc(env(safe-area-inset-top) + 0.75rem)"
 >
+	<button
+		type="button"
+		onclick={() => (open = !open)}
+		aria-label={$t('ui.switchLanguage')}
+		aria-expanded={open}
+		class="grid size-7 shrink-0 place-items-center overflow-hidden rounded-full border border-white/25 bg-white/15 opacity-60 shadow-[0_8px_28px_rgb(31_74_53/0.1)] backdrop-blur-xl transition-all hover:opacity-100 active:scale-95"
+	>
+		{@render flag($locale)}
+	</button>
+
 	{#if open}
 		<div
 			class="flex flex-col gap-1 rounded-full border border-white/25 bg-white/15 p-1 shadow-[0_8px_28px_rgb(31_74_53/0.1)] backdrop-blur-xl"
@@ -63,14 +73,4 @@
 			{/each}
 		</div>
 	{/if}
-
-	<button
-		type="button"
-		onclick={() => (open = !open)}
-		aria-label={$t('ui.switchLanguage')}
-		aria-expanded={open}
-		class="grid size-7 shrink-0 place-items-center overflow-hidden rounded-full border border-white/25 bg-white/15 opacity-60 shadow-[0_8px_28px_rgb(31_74_53/0.1)] backdrop-blur-xl transition-all hover:opacity-100 active:scale-95"
-	>
-		{@render flag($locale)}
-	</button>
 </div>
